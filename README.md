@@ -27,4 +27,4 @@
 
 ## 相关仓库
 
-- 其它索引：[`pc-tools`](https://github.com/Simiely/pc-tools)（PC 端）· [`design-tools`](https://github.com/Simiely/design-tools)（设计/3D）· [`mobile-apps`](https://github.com/Simiely/mobile-apps)（移动端）
+- 其它索引：[`pc-tools`](https://github.com/Simiely/pc-tools)（PC 端）· [`design-tools`](https://github.com/Simiely/design-tools)（设计/3D）· [`mobile-apps`](https://github.com/Simiely/mobile-apps)（移动端）· [`docker-tools`](https://github.com/Simiely/docker-tools)（自建服务）· [`knowledge-hub`](https://github.com/Simiely/knowledge-hub)（知识库）
