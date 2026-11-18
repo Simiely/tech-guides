@@ -1,0 +1,49 @@
+name: link-rot
+
+# 只做外链腐烂巡检：外站按自己的时钟坏，不能拿来卡 PR，所以走定时 + 手动。
+# 本地内链/锚点由 repo-kit 管；这里不重复，也不检查仓库内的相对链接。
+on:
+  schedule:
+    - cron: '0 18 * * 0'   # 每周日 18:00 UTC = 周一 02:00 (UTC+8)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: lychee-${{ github.ref }}-${{ github.run_id }}
+          restore-keys: lychee-
+
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # 429 = GitHub 限流，不代表链接坏了；--cache 让稳定链接不再重复请求
+          args: >-
+            --no-progress --cache --max-cache-age 1d
+            --accept 200,206,429 --max-retries 3 --timeout 20
+            './**/*.md'
+          fail: false
+
+      - name: Report broken links
+        if: steps.lychee.outputs.exit_code != 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          n=$(gh issue list --search '外链失效巡检 in:title' --state open --json number -q '.[0].number // empty')
+          if [ -z "$n" ]; then
+            gh issue create --title "外链失效巡检 · $(date -u +%F)" --body-file lychee/out.md
+          else
+            gh issue comment "$n" --body-file lychee/out.md
+          fi

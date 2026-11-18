@@ -20,3 +20,9 @@
 ## 相关
 - 同账号其它索引： [`pc-tools`](https://github.com/Simiely/pc-tools) · [`design-tools`](https://github.com/Simiely/design-tools) · [`mobile-apps`](https://github.com/Simiely/mobile-apps) · [`tech-guides`](https://github.com/Simiely/tech-guides)
 - 领域总管仓库： [`ae-tools`](https://github.com/Simiely/ae-tools) · [`blender-addons`](https://github.com/Simiely/blender-addons) · [`c4d-tools`](https://github.com/Simiely/c4d-tools)
+
+## 外链巡检（link-rot）
+
+- `.github/workflows/link-rot.yml`：每周一 02:00（UTC+8）跑 lychee 查全部 md 的外链，失败自动开/追 issue
+- **不跑 PR 门禁**：外站按自己的时钟坏，不能阻塞无关合并；有缓存，稳定链接不重复请求
+- 本仓没有 repo-kit 机器层：只有 4 个 md、几乎全是外链，`check_repo` 查不到东西
